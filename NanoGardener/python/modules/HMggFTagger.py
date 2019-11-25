@@ -73,7 +73,10 @@ class HMggFTaggerClass(Module):
 
         IsggF = False
 
-
+        # if event is already tagged as VBF just write out -1 and continue with next module
+        if IsVbfFat or IsVbfjj:
+            self.out.fillBranch("ggF_MELA_var", -1)
+            return True
 
         daughter_coll   = SimpleParticleCollection_t()
         associated_coll = SimpleParticleCollection_t()
@@ -121,7 +124,7 @@ class HMggFTaggerClass(Module):
         ######################
         ## hadronic part
         ######################
-        if IsBoosted and IsVbfFat:
+        if IsBoosted:
             jetID = 0
             jetLV = ROOT.TLorentzVector()
             jetLV.SetPtEtaPhiM(
@@ -145,7 +148,7 @@ class HMggFTaggerClass(Module):
                 associated_coll.push_back(SimpleParticle_t(0, jetLV))
 
 
-        elif IsResolved and IsVbfjj:
+        elif IsResolved:
             jetID = 0
             jet0LV = ROOT.TLorentzVector()
             jet0LV.SetPtEtaPhiM(
